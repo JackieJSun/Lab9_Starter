@@ -6,7 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 9</title>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script type="module">
+    //STEP 5
+    window.TrackJS && TrackJS.install({ 
+      token: "430f93f41aa246ae96110d53b38faa68"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                        
   <style>
     button {
       margin: 3px;
@@ -69,21 +77,22 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id="log">Console Log</button>
+      <button id="error">Console Error</button>
+      <button id="count">Console Count</button>
+      <button id="warn">Console Warn</button>
+      <button id="assert">Console Assert</button>
+      <button id="clear">Console Clear</button>
+      <button id="dir">Console Dir</button>
+      <button id="dirxml">Console dirxml</button>
+      <button id="groupstart">Console Group Start</button>
+      <button id="groupend">Console Group End</button>
+      <button id="table">Console Table</button>
+      <button id="starttimer">Start Timer</button>
+      <button id="endtimer">End Timer</button>
+      <button id="trace">Console Trace</button>
+      <button id="globalerror">Trigger a Global Error</button>
+      <button id="customerror">Trigger a Custom Error</button>
     </section>
   </main>
 
@@ -100,8 +109,133 @@
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
+    //STEP 2
+    //log
+    let consoleLog = document.getElementById('log');
+    consoleLog.addEventListener('click', e => {
+      console.log('Console Log Demo');
+    })
+
+    //error
+    let consoleError = document.getElementById('error');
+    consoleError.addEventListener('click', e => {
+      console.error('Console Error Demo');
+    })
+
+    //count
+    let consoleCount = document.getElementById('count');
+    consoleCount.addEventListener('click', e => {
+      console.count("Console Count Demo");
+    })
+
+    //warn
+    let consoleWarn = document.getElementById('warn');
+    consoleWarn.addEventListener('click', e => {
+      console.warn("Console Warn Demo");
+    })    
+
+    //assert
+    let consoleAssert = document.getElementById('assert');
+    consoleAssert.addEventListener('click', e => {
+      let num = 1;
+      console.assert(num == 2, 'The assertion failed, num != 2.');
+    })
+ 
+    //clear
+    let consoleClear = document.getElementById('clear');
+    consoleClear.addEventListener('click', e => {
+      console.clear();
+    })    
+
+    //dir
+    let consoleDir = document.getElementById('dir');
+    consoleDir.addEventListener('click', e => {
+      console.dir(document);
+    })        
+
+    //dirxml
+    let consoleDirXML = document.getElementById('dirxml');
+    consoleDirXML.addEventListener('click', e => {
+      console.dirxml(errorBtns);
+    })
+    
+    //groupstart
+    let consoleGroupStart = document.getElementById('groupstart');
+    consoleGroupStart.addEventListener('click', e => {
+      console.group();
+    })    
+
+    //groupend
+    let consoleGroupEnd = document.getElementById('groupend');
+    consoleGroupEnd.addEventListener('click', e => {
+      console.groupEnd();
+    })    
+
+    //table
+    let consoleTable = document.getElementById('table');
+    consoleTable.addEventListener('click', e => {
+      console.table(["A", "B", "C"]);
+    })    
+
+    //starttimer
+    let consoleStartTimer = document.getElementById('starttimer');
+    consoleStartTimer.addEventListener('click', e => {
+      console.time('timedemo');
+    })    
+
+    //endtimer
+    let consoleEndTimer = document.getElementById('endtimer');
+    consoleEndTimer.addEventListener('click', e => {
+      console.timeEnd('timedemo');
+    })
+
+    //trace
+    let consoleTrace = document.getElementById('trace');
+    consoleTrace.addEventListener('click', e => {
+      deep();
+    })   
+
+    function deep() {
+      deeper();
+    }
+
+    function deeper() {
+      console.trace();
+    }
+
+    //globalerror
+    //STEP 3
+    let consoleGlobalError = document.getElementById('globalerror');
+
+      consoleGlobalError.addEventListener('click', e => {
+        try {
+          let consoleStarTimer = document.getElementById('startimer');
+          consoleStarTimer.addEventListener('click', e => {
+            deep();
+          })   
+        }
+        catch(error) {
+          console.log("Error: " + error);
+        }
+        finally {
+          console.log("The error was caught.");
+        }
+        throw new ReferenceError("This is a global error!");
+      }) 
+    
+    //STEP 4
+    let consoleCustomError = document.getElementById('customerror');
+    consoleCustomError.addEventListener('click', e => {
+      throw new CustomError("This is a custom error!")
+    })   
+
+    class CustomError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "CustomError";
+      }
+    }
+
   </script>
 </body>
 
